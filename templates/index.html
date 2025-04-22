@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head><title>Job Tracker</title></head>
+<body>
+    <h2>Job Applications</h2>
+    <a href="/add">Add New Job</a>
+    <table border="1">
+        <tr>
+            <th>Job Title</th><th>Company</th><th>Status</th><th>Pay</th><th>Actions</th>
+        </tr>
+        {% for job in jobs %}
+        <tr>
+            <td>{{ job[1] }}</td>
+            <td>{{ job[2] }}</td>
+            <td>{{ job[7] }}</td>
+            <td>{{ job[6] }}</td>
+            <td><a href="/edit/{{ job[0] }}">Edit</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
