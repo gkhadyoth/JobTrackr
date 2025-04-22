@@ -64,4 +64,4 @@ def edit(job_id):
     return render_template("edit.html", job=job)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000, debug=True)
+    app.run(debug=True)
