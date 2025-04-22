@@ -1,11 +1,14 @@
 from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
+import os
 
 app = Flask(__name__)
-DB = "job_applications.db"
+
+# Use a writable path for hosted environments
+DB_PATH = os.path.join(os.path.dirname(__file__), "job_applications.db")
 
 def init_db():
-    conn = sqlite3.connect(DB)
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS jobs (
@@ -23,9 +26,11 @@ def init_db():
     conn.commit()
     conn.close()
 
+init_db()  # Always initialize the DB
+
 @app.route("/")
 def index():
-    conn = sqlite3.connect(DB)
+    conn = sqlite3.connect(DB_PATH)
     jobs = conn.execute("SELECT * FROM jobs").fetchall()
     conn.close()
     return render_template("index.html", jobs=jobs)
@@ -34,7 +39,7 @@ def index():
 def add():
     if request.method == "POST":
         data = [request.form[key] for key in ["title", "company", "url", "username", "password", "pay", "status", "notes"]]
-        conn = sqlite3.connect(DB)
+        conn = sqlite3.connect(DB_PATH)
         conn.execute("INSERT INTO jobs (title, company, url, username, password, pay, status, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", data)
         conn.commit()
         conn.close()
@@ -43,7 +48,7 @@ def add():
 
 @app.route("/edit/<int:job_id>", methods=["GET", "POST"])
 def edit(job_id):
-    conn = sqlite3.connect(DB)
+    conn = sqlite3.connect(DB_PATH)
     if request.method == "POST":
         data = [request.form[key] for key in ["title", "company", "url", "username", "password", "pay", "status", "notes"]]
         data.append(job_id)
@@ -57,7 +62,6 @@ def edit(job_id):
     job = conn.execute("SELECT * FROM jobs WHERE id=?", (job_id,)).fetchone()
     conn.close()
     return render_template("edit.html", job=job)
-    
+
 if __name__ == "__main__":
-    init_db()
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=10000, debug=True)
