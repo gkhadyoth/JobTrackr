@@ -4,9 +4,11 @@
 <body>
     <h2>Edit Job</h2>
     <form method="post">
-        {% for i, field in enumerate(['title', 'company', 'url', 'username', 'password', 'pay', 'status', 'notes']) %}
-            <label>{{ field.capitalize() }}:</label><br>
-            <input type="{{ 'password' if field == 'password' else 'text' }}" name="{{ field }}" value="{{ job[i+1] }}"><br><br>
+        {% set fields = [('title', 'Job Title'), ('company', 'Company'), ('url', 'Job URL'), ('username', 'Portal Username'),
+                 ('password', 'Portal Password'), ('pay', 'Pay'), ('status', 'Application Status'), ('notes', 'Notes')] %}
+        {% for field, label in fields %}
+            <label>{{ label }}:</label><br>
+            <input type="{{ 'password' if field == 'password' else 'text' }}" name="{{ field }}" value="{{ job[loop.index] }}"><br><br>
         {% endfor %}
         <button type="submit">Update</button>
     </form>
