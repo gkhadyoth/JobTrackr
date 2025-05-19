@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 import os
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -39,10 +40,13 @@ def index():
 def add():
     if request.method == "POST":
         data = [request.form[key] for key in ["title", "company", "url", "username", "password", "pay", "status", "notes"]]
+        date_applied = datetime.now().strftime("%m/%d/%y")
+        data.append(date_applied)
         conn = sqlite3.connect(DB_PATH)
-        conn.execute("INSERT INTO jobs (title, company, url, username, password, pay, status, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", data)
+        conn.execute("INSERT INTO jobs (title, company, url, username, password, pay, status, notes, date_applied) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", data)
         conn.commit()
         conn.close()
+        
         return redirect(url_for("index"))
     return render_template("add.html")
 
