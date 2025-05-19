@@ -21,7 +21,8 @@ def init_db():
             password TEXT,
             pay TEXT,
             status TEXT,
-            notes TEXT
+            notes TEXT,
+            date_applied TEXT
         )
     """)
     conn.commit()
