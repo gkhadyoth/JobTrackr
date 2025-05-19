@@ -39,6 +39,7 @@
     <br><br>
     <table>
         <tr>
+            <th>Date Applied</th>
             <th>Job Title</th>
             <th>Company</th>
             <th>Status</th>
@@ -47,11 +48,12 @@
             <th>Password</th>
             <th>Notes</th>
             <th>Actions</th>
-            <th>Date Applied</th>
+            
 
         </tr>
         {% for job in jobs %}
         <tr>
+            <td>{{ job[9] }}</td>
             <td><a href="{{ job[3] }}" target="_blank">{{ job[1] }}</a></td>
             <td>{{ job[2] }}</td>
             <td>{{ job[7] }}</td>
@@ -65,7 +67,7 @@
             </td>
             <td>{{ job[8] }}</td>
             <td><a href="/edit/{{ job[0] }}">Edit</a></td>
-            <td>{{ job[9] }}</td>
+            
         </tr>
         {% endfor %}
     </table>
